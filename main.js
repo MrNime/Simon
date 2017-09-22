@@ -11,6 +11,8 @@ var audioObj = {
     blue: audio4,
     error: audioError
 }
+var power = false;
+var strictMode = false;
 var tileChoices = ["green", "red", "yellow", "blue"]
 var simonMoves = ["green"];
 var playerIdx = 0;
@@ -89,6 +91,9 @@ function checkClick(color) {
         }
     } else {
         notifyError();
+        if (strictMode) {
+            resetGame();
+        }
     }
 }
 
@@ -107,3 +112,27 @@ function notifyError() {
 }
 
 loopMoves(simonMoves);
+
+var powerBtn = document.querySelector('#power');
+var strictBtn = document.querySelector('#strict');
+var startBtn = document.querySelector('#start');
+
+powerBtn.addEventListener("change", function(e) {
+    power = e.target.checked;
+})
+
+strictBtn.addEventListener("change", function(e) {
+    strictMode = e.target.checked;
+    console.log(strictMode);
+})
+
+startBtn.addEventListener("click", function() {
+    resetGame();
+    loopMoves(simonMoves);
+})
+
+function resetGame() {
+    simonMoves = [randomChoice(tileChoices)];
+    playerIdx = 0;
+    roundNr = 1;
+}
