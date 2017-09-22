@@ -92,8 +92,3 @@ input[type=checkbox] + label {
 input[type=checkbox]:checked + label {
   color: var(--red500);
 }
-
-input:checked {
-    background-color: blue;
-    padding: 5rem;
-}

@@ -20,10 +20,6 @@ var roundNr = 1;
 var tiles = document.querySelector('.tiles');
 var display = document.querySelector('#display');
 
-tiles.addEventListener("mousedown", clickBtn());
-tiles.addEventListener("mouseup", removeClass("light"));
-tiles.addEventListener("mouseout", removeClass("light"));
-
 function removeClass(classString) {
     return function(e) {
         e.target.classList.remove(classString);
@@ -111,28 +107,45 @@ function notifyError() {
     }, 1000);
 }
 
-loopMoves(simonMoves);
-
 var powerBtn = document.querySelector('#power');
 var strictBtn = document.querySelector('#strict');
 var startBtn = document.querySelector('#start');
 
 powerBtn.addEventListener("change", function(e) {
     power = e.target.checked;
-})
-
-strictBtn.addEventListener("change", function(e) {
-    strictMode = e.target.checked;
-    console.log(strictMode);
-})
-
-startBtn.addEventListener("click", function() {
-    resetGame();
-    loopMoves(simonMoves);
+    if (power) {
+        updateDisplay(roundNr)
+        lockState(false)
+    } else {
+        updateDisplay('--')
+        lockState(true);
+        //make all buttons (un)clickable and set display to off/on
+    }
 })
 
 function resetGame() {
     simonMoves = [randomChoice(tileChoices)];
     playerIdx = 0;
     roundNr = 1;
+}
+
+function lockState(bool) {
+    if (!bool) {
+        console.log("bool is true");
+        tiles.addEventListener("mousedown", clickBtn());
+        tiles.addEventListener("mouseup", removeClass("light"));
+        tiles.addEventListener("mouseout", removeClass("light"));
+        strictBtn.addEventListener("change", function(e) {
+            strictMode = e.target.checked;
+            console.log(strictMode);
+        })
+        startBtn.addEventListener("click", function() {
+            if (power) {
+                resetGame();
+                loopMoves(simonMoves);
+            }
+        })
+    } else {
+        console.log("tis false");
+    }
 }
