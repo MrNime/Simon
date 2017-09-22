@@ -2,50 +2,98 @@
     border: 1px solid black;
 }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+:root {
+    --red900: #B71C1C;
+    --red500: #F44336;
+    --blue900: #0D47A1;
+    --blue500: #2196F3;
+    --green900: #1B5E20;
+    --green500: #4CAF50;
+    --yellow900: #F57F17;
+    --yellow500: #FFEB3B;
+}
+
+.wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.controls {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .tiles {
     display: flex;
 }
+
+#display {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .tiles > * {
     height: 200px;
-    width: 200px;
+    min-width: 200px;
 }
 
 #blue {
-    background-color: blue;
+    background-color: var(--blue900);
 }
 
 #yellow {
-    background-color: yellow;
+    background-color: var(--yellow900);
 }
 
 #red {
-    background-color: red;
+    background-color: var(--red900);
 }
 
 #green {
-    background-color: green;
-}
-
-#display {
-    height: 50px;
-    background-color: black;
-    color: red;
-    text-align: center;
-    font-size: 2rem;
+    background-color: var(--green900);
 }
 
 #yellow.light{
-  background-color : #fed93f;
+  background-color : var(--yellow500);
 }
 
 #blue.light{
-  background-color : #1c8cff;
+  background-color : var(--blue500);
 }
 
 #red.light{
-  background-color : #ff4c4c;
+  background-color : var(--red500);
 }
 
 #green.light{
-  background-color : #13ff7c;
+  background-color : var(--green500);
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label {
+  padding: 0.5rem;
+}
+input[type=checkbox]:checked + label {
+  color: var(--red500);
+}
+
+input:checked {
+    background-color: blue;
+    padding: 5rem;
 }

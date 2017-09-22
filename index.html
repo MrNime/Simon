@@ -8,13 +8,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="tiles">
-        <div id="green"></div>
-        <div id="red"></div>
-        <div id="yellow"></div>
-        <div id="blue"></div>
+    <div class="wrapper">
+        <div class="app">
+            <div class="controls">
+                <input type="checkbox" id="power" name="power">
+                <label for="power">Power</label>
+                <input type="checkbox" id="strict" name="strict">
+                <label for="strict">Strict</label>
+            </div>
+            <div class="tiles">
+                <div id="green"></div>
+                <div id="red"></div>
+                <div id="yellow"></div>
+                <div id="blue"></div>
+            </div>
+            <div id="display">1</div>
+        </div>
     </div>
-    <div id="display">1</div>
+    <footer>Coded by <a href="#">Nicky Meuleman</a></footer>
     <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
