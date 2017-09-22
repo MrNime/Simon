@@ -1,0 +1,51 @@
+* {
+    border: 1px solid black;
+}
+
+.tiles {
+    display: flex;
+}
+.tiles > * {
+    height: 200px;
+    width: 200px;
+}
+
+#blue {
+    background-color: blue;
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+#red {
+    background-color: red;
+}
+
+#green {
+    background-color: green;
+}
+
+#display {
+    height: 50px;
+    background-color: black;
+    color: red;
+    text-align: center;
+    font-size: 2rem;
+}
+
+#yellow.light{
+  background-color : #fed93f;
+}
+
+#blue.light{
+  background-color : #1c8cff;
+}
+
+#red.light{
+  background-color : #ff4c4c;
+}
+
+#green.light{
+  background-color : #13ff7c;
+}
