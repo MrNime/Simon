@@ -23,11 +23,13 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
+    width: 80vw;
 }
 
 .app {
     display: flex;
     flex-direction: column;
+    flex-basis: 100%;
     justify-content: center;
 }
 
@@ -38,6 +40,7 @@ body {
 
 .tiles {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #display {
@@ -46,8 +49,9 @@ body {
 }
 
 .tiles > * {
-    height: 200px;
-    min-width: 200px;
+    height: 10em;
+    min-width: 100px;
+    flex:1;
 }
 
 #blue {
@@ -82,8 +86,12 @@ body {
   background-color : var(--green500);
 }
 
+.win {
+    background-color: var(--green500);
+}
+
 input[type=checkbox] {
-  display: none;
+  /*display: none;*/
 }
 
 input[type=checkbox] + label {

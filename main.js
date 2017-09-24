@@ -1,24 +1,51 @@
-var audio1 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3');
-var audio2 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3');
-var audio3 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3');
-var audio4 = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
-var audioError = new Audio('https://s3-us-west-2.amazonaws.com/guylemon/Buzzer.mp3');
-
 var audioObj = {
-    green: audio1,
-    red: audio2,
-    yellow: audio3,
-    blue: audio4,
-    error: audioError
+    green: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'),
+    red: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
+    yellow: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'),
+    blue: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3'),
+    error: new Audio('https://s3-us-west-2.amazonaws.com/guylemon/Buzzer.mp3')
 }
 var power = false;
 var strictMode = false;
 var tileChoices = ["green", "red", "yellow", "blue"]
-var simonMoves = ["green"];
+var simonMoves = [];
 var playerIdx = 0;
 var roundNr = 1;
+
 var tiles = document.querySelector('.tiles');
 var display = document.querySelector('#display');
+var powerBtn = document.querySelector('#power');
+var strictBtn = document.querySelector('#strict');
+var startBtn = document.querySelector('#start');
+
+powerBtn.addEventListener("change", function(e) {
+    power = e.target.checked;
+    resetGame();
+    if (power) {
+        strictBtn.disabled = false;
+        updateDisplay(roundNr)
+        lockState(false)
+    } else {
+        strictBtn.disabled = true;
+        updateDisplay('--')
+        lockState(true);
+    }
+})
+
+// function clickBtn(color) {
+//     return function(e) {
+//         //if player clicks
+//         if (e.target.id) {
+//             checkClick(e.target.id);
+//             e.target.classList.add("light");
+//         }
+//     };
+// }
+
+function clickBtn(e) {
+    checkClick(e.target.id);
+    e.target.classList.add("light");
+}
 
 function removeClass(classString) {
     return function(e) {
@@ -32,6 +59,31 @@ function addClass(classString) {
     };
 }
 
+function lockState(bool) {
+    if (!bool) {
+        tiles.addEventListener("mousedown", clickBtn);
+        tiles.addEventListener("mouseup", removeClass("light"));
+        tiles.addEventListener("mouseout", removeClass("light"));
+        strictBtn.addEventListener("change", strictBtnHdl);
+        startBtn.addEventListener("click", startBtnHdl);
+    } else {
+        tiles.removeEventListener("mousedown", clickBtn);
+        strictBtn.removeEventListener("change", strictBtnHdl);
+        startBtn.removeEventListener("click", startBtnHdl);
+    }
+}
+
+function strictBtnHdl(e) {
+    strictMode = e.target.checked;
+}
+
+function startBtnHdl() {
+    if (power) {
+        resetGame();
+        loopMoves(simonMoves);
+    }
+}
+
 function playAudio(audio) {
     audio.play();
 }
@@ -39,16 +91,6 @@ function playAudio(audio) {
 function randomChoice(array) {
   var idx = Math.floor(Math.random() * array.length);
   return array[idx];
-}
-
-function clickBtn(color) {
-    return function(e) {
-        //if player clicks
-        if (e.target.id) {
-            checkClick(e.target.id);
-            e.target.classList.add("light");
-        }
-    };
 }
 
 function animateBtn(color) {
@@ -62,6 +104,7 @@ function animateBtn(color) {
 }
 
 function loopMoves(moveArr) {
+    lockState(true);
     for (let [idx, elem] of moveArr.entries()) {
         //use IIFE with right timeout length
         (function(idx) {
@@ -70,6 +113,10 @@ function loopMoves(moveArr) {
             }, 1000 * idx);
         })(idx);
     }
+    //only remove lock after loop is finished playing
+    setTimeout(function () {
+        lockState(false);
+    }, moveArr.length * 1000);
 }
 
 function checkClick(color) {
@@ -79,11 +126,15 @@ function checkClick(color) {
         if (playerIdx == simonMoves.length) {
             playerIdx = 0;
             roundNr++;
-            updateDisplay(roundNr);
-            simonMoves.push(randomChoice(tileChoices));
-            setTimeout(function () {
-                loopMoves(simonMoves);
-            }, 1000);
+            if (roundNr > 5) {
+                notifyWin();
+            } else {
+                updateDisplay(roundNr);
+                simonMoves.push(randomChoice(tileChoices));
+                setTimeout(function () {
+                    loopMoves(simonMoves);
+                }, 1000);
+            }
         }
     } else {
         notifyError();
@@ -98,6 +149,8 @@ function updateDisplay(text) {
 }
 
 function notifyError() {
+    //need to set lockstate here to prevent double click looping of moves
+    lockState(true);
     playerIdx = 0;
     updateDisplay('!!');
     playAudio(audioObj['error']);
@@ -107,45 +160,17 @@ function notifyError() {
     }, 1000);
 }
 
-var powerBtn = document.querySelector('#power');
-var strictBtn = document.querySelector('#strict');
-var startBtn = document.querySelector('#start');
-
-powerBtn.addEventListener("change", function(e) {
-    power = e.target.checked;
-    if (power) {
-        updateDisplay(roundNr)
-        lockState(false)
-    } else {
-        updateDisplay('--')
-        lockState(true);
-        //make all buttons (un)clickable and set display to off/on
-    }
-})
-
-function resetGame() {
-    simonMoves = [randomChoice(tileChoices)];
-    playerIdx = 0;
-    roundNr = 1;
+function notifyWin() {
+    updateDisplay("WINNER WINNER CHICKEN DINNER!")
+    document.querySelector("body").classList.add("win");
+    lockState(true);
 }
 
-function lockState(bool) {
-    if (!bool) {
-        console.log("bool is true");
-        tiles.addEventListener("mousedown", clickBtn());
-        tiles.addEventListener("mouseup", removeClass("light"));
-        tiles.addEventListener("mouseout", removeClass("light"));
-        strictBtn.addEventListener("change", function(e) {
-            strictMode = e.target.checked;
-            console.log(strictMode);
-        })
-        startBtn.addEventListener("click", function() {
-            if (power) {
-                resetGame();
-                loopMoves(simonMoves);
-            }
-        })
-    } else {
-        console.log("tis false");
-    }
+function resetGame() {
+    simonMoves = [];
+    simonMoves.push(randomChoice(tileChoices));
+    playerIdx = 0;
+    roundNr = 1;
+    document.querySelector("body").classList.remove("win");
+    strictBtn.checked = false;
 }
