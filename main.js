@@ -66,6 +66,11 @@ function lockState(bool) {
         tiles.addEventListener("mouseout", removeClass("light"));
         strictBtn.addEventListener("change", strictBtnHdl);
         startBtn.addEventListener("click", startBtnHdl);
+
+        //TEST MOMBILE TOUCHES
+        tiles.addEventListener("touchstart", clickBtn);
+        tiles.addEventListener("touchend", removeClass("light"));
+
     } else {
         tiles.removeEventListener("mousedown", clickBtn);
         strictBtn.removeEventListener("change", strictBtnHdl);
