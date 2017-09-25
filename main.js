@@ -26,6 +26,7 @@ powerBtn.addEventListener("change", function(e) {
         updateDisplay(roundNr)
         lockState(false)
     } else {
+        strictBtn.checked = false;
         strictBtn.disabled = true;
         updateDisplay('--')
         lockState(true);
@@ -177,5 +178,4 @@ function resetGame() {
     playerIdx = 0;
     roundNr = 1;
     document.querySelector("body").classList.remove("win");
-    strictBtn.checked = false;
 }

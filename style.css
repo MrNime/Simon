@@ -1,13 +1,3 @@
-* {
-    border: 1px solid black;
-}
-
-body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
 :root {
     --red900: #B71C1C;
     --red500: #F44336;
@@ -17,12 +7,22 @@ body {
     --green500: #4CAF50;
     --yellow900: #F57F17;
     --yellow500: #FFEB3B;
+    --brown600: #6D4C41;
+    --grey100: #F5F5F5;
+    --grey800: #424242;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--brown600);
 }
 
 .wrapper {
     flex: 1;
     display: flex;
-    justify-content: center;
     width: 80vw;
 }
 
@@ -38,20 +38,37 @@ body {
     justify-content: flex-start;
 }
 
+.controls > * {
+    border-right-width: 0 !important;
+    border-bottom-width: 0 !important;
+}
+
+.controls > *:last-child {
+    border-right-width: 0.125rem !important;
+}
+
 .tiles {
     display: flex;
     flex-wrap: wrap;
 }
 
 #display {
-    display: flex;
-    justify-content: flex-end;
+    align-self: flex-end;
+    border-top: 0;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
 }
 
 .tiles > * {
     height: 10em;
     min-width: 100px;
     flex:1;
+    border: 0.125rem solid black;
+    border-right-width: 0;
+}
+
+.tiles > *:last-child {
+    border-right-width: 0.125rem;
 }
 
 #blue {
@@ -91,12 +108,45 @@ body {
 }
 
 input[type=checkbox] {
-  /*display: none;*/
+  display: none;
 }
 
 input[type=checkbox] + label {
   padding: 0.5rem;
 }
+
 input[type=checkbox]:checked + label {
-  color: var(--red500);
+  color: var(--red900);
+}
+
+.tab {
+    min-width: 2em;
+    background-color: var(--grey100);
+    border: 0.125rem solid black;
+    font-family: monospace;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#power + label {
+    border-top-left-radius: 0.25rem;
+}
+
+#start {
+    border-top-right-radius: 0.25rem;
+}
+
+footer {
+    font-size: 1.5rem;
+    font-family: monospace;
+}
+
+footer > a {
+    text-decoration: none;
+    color: var(--grey800);
+}
+
+footer > a:hover {
+    text-decoration: none;
+    color: var(--grey100);
 }
